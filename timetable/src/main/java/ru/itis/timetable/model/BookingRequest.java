@@ -33,6 +33,9 @@ public class BookingRequest {
     @Column(name = "booking_request_id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "period")
     private BookingPeriod period;
@@ -65,5 +68,35 @@ public class BookingRequest {
 
     @Column(name = "c_group")
     private String group;
+
+    public void setTime(String time) {
+        switch (time) {
+            case "1": {
+                this.time = Time.FIRST;
+                break;
+            }
+            case "2": {
+                this.time = Time.SECOND;
+                break;
+            }
+            case "3": {
+                this.time = Time.THIRD;
+                break;
+            }
+            case "4": {
+                this.time = Time.FOURTH;
+                break;
+            }
+            case "5": {
+                this.time = Time.FIFTH;
+                break;
+            }
+            case "6": {
+                this.time = Time.SIXTH;
+                break;
+            }
+        }
+    }
+
 
 }

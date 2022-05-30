@@ -56,7 +56,7 @@ public class GeneticAlgorithm {
 
         log.info("\nGeneration: " + generationCount + " Fittest: " + population.getFittestScore());
         //show genetic pool
-        showGeneticPool(population.getIndividuals());
+//        showGeneticPool(population.getIndividuals());
 
         //While population gets an individual with maximum fitness
         while (population.getFittestScore() < numberOfGenes || generationCount < maxGeneration) {
@@ -98,7 +98,7 @@ public class GeneticAlgorithm {
 
             //Replace least fittest individual from most fittest offspring
             population.getIndividuals()[leastFittestIndex] =
-                    fittest.getFitness() > secondFittest.getFitness()
+                    fittest.getFitness() < secondFittest.getFitness()
                             ? fittest
                             : secondFittest;
 
@@ -106,10 +106,11 @@ public class GeneticAlgorithm {
             Arrays.stream(population.getIndividuals()).forEach(service::calcFitness);
 
 
+            log.info("\nGeneration: " + generationCount + " Mean distances: " + population.getMeanDistances());
             log.info("\nGeneration: " + generationCount + " Fittest score: " + population.getFittestScore());
 
             //show genetic pool
-            showGeneticPool(population.getIndividuals());
+//            showGeneticPool(population.getIndividuals());
         }
 
         log.info("\nSolution found in generation " + generationCount);

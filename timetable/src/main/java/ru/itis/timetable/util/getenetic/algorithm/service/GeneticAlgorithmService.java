@@ -63,8 +63,9 @@ public class GeneticAlgorithmService {
         var auditoryClashes = auditoryClashes(bookings);
         var requirementsFailed = requirementFailed(bookings);
         var distances = calculateDistances(bookings);
+        individual.setDistances(distances);
 
-        var fitness = (int) (distances + (capacity * 100) + (auditoryClashes * 1000) + (requirementsFailed * 700));
+        var fitness = (int) (distances * 200 + (capacity * 100) + (auditoryClashes * 1000) + (requirementsFailed * 700));
         individual.setFitness(fitness);
     }
 
@@ -190,7 +191,7 @@ public class GeneticAlgorithmService {
                             .sorted(Comparator.comparing(Booking::getTime))
                             .map(Booking::getAuditory)
                             .reduce((a, a1) -> {
-                                dist.addAndGet(distanceService.getDistanceBetween(a, a1));
+                                dist.addAndGet(Math.round(distanceService.getDistanceBetween(a, a1)));
                                 return a1;
                             })
                     );
@@ -204,7 +205,7 @@ public class GeneticAlgorithmService {
                             .sorted(Comparator.comparing(Booking::getTime))
                             .map(Booking::getAuditory)
                             .reduce((a, a1) -> {
-                                dist.addAndGet(distanceService.getDistanceBetween(a, a1));
+                                dist.addAndGet(Math.round(distanceService.getDistanceBetween(a, a1)));
                                 return a1;
                             })
                     );

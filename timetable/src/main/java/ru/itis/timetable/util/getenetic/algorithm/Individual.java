@@ -10,6 +10,7 @@ public class Individual implements Cloneable {
     private int geneLength;
     private int fitness = 0;
     private Gen[] genes;
+    private long distances;
 
     public Individual(Gen[] genes) {
         this.genes = genes;

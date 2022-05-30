@@ -2,6 +2,8 @@ package ru.itis.timetable.util.getenetic.algorithm;
 
 import lombok.Data;
 
+import java.util.Arrays;
+
 @Data
 public class Population {
     private int popSize;
@@ -13,19 +15,23 @@ public class Population {
         individuals = new Individual[popSize];
     }
 
+    public float getMeanDistances() {
+        return Arrays.stream(individuals).map(Individual::getDistances).reduce(Long::sum).orElse(Long.MAX_VALUE).floatValue() / individuals.length;
+    }
+
     public Individual selectFittest() {
-        int maxFit = Integer.MAX_VALUE;
-        int maxFitIndex = 0;
+        int minFit = Integer.MAX_VALUE;
+        int minFitIndex = 0;
         for (int i = 0; i < individuals.length; i++) {
-            if (maxFit > individuals[i].getFitness()) {
-                maxFit = individuals[i].getFitness();
-                maxFitIndex = i;
+            if (minFit > individuals[i].getFitness()) {
+                minFit = individuals[i].getFitness();
+                minFitIndex = i;
             }
         }
-        fittestScore = individuals[maxFitIndex].getFitness();
+        fittestScore = individuals[minFitIndex].getFitness();
 
         try {
-            return (Individual) individuals[maxFitIndex].clone();
+            return (Individual) individuals[minFitIndex].clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

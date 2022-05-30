@@ -6,33 +6,35 @@ import ru.itis.timetable.model.Auditory;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Service
 public class DistanceService {
-    private final int[][] dist = new int[100][100];
+    private final float[][] dist = new float[150][150];
 
     @PostConstruct
     public void init() throws FileNotFoundException {
         var file = new File("src/main/resources/data/distances.csv");
 
         var sc = new Scanner(file);
+        sc.nextLine();
 
-        while (sc.hasNext()) {
+        for (int i = 0; i < 88; i++) {
             var str = sc.nextLine();
-            var ints = Arrays.stream(str.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+            var distances = Arrays.stream(str.replaceAll("\"", "").split(","))
+                    .map(Float::parseFloat)
+                    .collect(Collectors.toList());
 
-            dist[ints.get(0)][ints.get(1)] = ints.get(2);
-            dist[ints.get(1)][ints.get(0)] = ints.get(2);
+            for (int j = 1; j < i; j++) {
+                dist[i][j] = distances.get(j);
+                dist[j][i] = distances.get(j);
+            }
         }
     }
 
-    public long getDistanceBetween(Auditory one, Auditory two) {
+    public Float getDistanceBetween(Auditory one, Auditory two) {
         return dist[one.getId().intValue()][two.getId().intValue()];
     }
-
-
 }
